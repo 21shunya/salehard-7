@@ -3,10 +3,10 @@ const { pool } = require("./dbConfig");
 const bcrypt = require("bcrypt");
 
 function initialize(passport) {
-  console.log("Initialized");
+  console.log("Авторизация включена");
 
   const authenticateUser = (email, password, done) => {
-    console.log(email, password);
+    console.log('Аутентификация юзера. Data:', email, password);
     pool.query(
       `SELECT * FROM "user" WHERE name = $1`,
       [email],
@@ -14,13 +14,13 @@ function initialize(passport) {
         if (err) {
           throw err;
         }
-        console.log(results.rows);
+        // console.log(results.rows);
 
         if (results.rows.length > 0) {
           const user = results.rows[0];
           console.log('Юзер успешно найден:', user);
 
-          if (user.password == password){
+          if (user.password == password){ // @info грубое сравнение паролей!!! Необходимо использовать bcrypt compare hashed password
             return done(null, user);
           }
           // bcrypt.compare(password, user.password, (err, isMatch) => {

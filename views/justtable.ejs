@@ -105,8 +105,8 @@
         <th>password</th>
         <th>created</th>
         <th>updated</th>
-        <th></th>
-        <th></th>
+        <th>затычка</th>
+        <th>Удалить (на себе не вызывать!!)</th>
     </tr>
 <% var i = 1; %>
 <% for (var row of rows ) { %>
@@ -119,7 +119,7 @@
         <td><%= row.created %></td>
         <td><%= row.updated %></td>
         <td><button type="button">Кнопка1</button></td>
-        <td><a class="btn btn-raised btn-danger" href="/justtabledeleterow/<%= row.id %>">Delete</a></td>
+        <td><button onclick="document.location='/justtabledeleterow/<%= row.id %>'">Delete</button></td>
     </tr>
 <% } %>
 

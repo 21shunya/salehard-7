@@ -53,7 +53,7 @@ app.get("/users/login", checkAuthenticated, (req, res) => {
 });
 
 app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
-  console.log(req.isAuthenticated());
+  console.log('Запрос от авторизованного лица? =>' ,req.isAuthenticated());
   res.render("dashboard.ejs", { user: req.user.name });
 });
 
@@ -111,7 +111,7 @@ app.post("/users/register", async (req, res) => {
         } else {
           pool.query(
             `INSERT INTO "user" (name, phone, password)
-                VALUES ($1, $2, $3)
+                VALUES ($1, $2, $3) // @info Записывается сырой пароль!! использовать bcrypt hash password
                 RETURNING id`,
             [name, phone, password],
             (err, results) => {
