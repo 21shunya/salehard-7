@@ -51,23 +51,26 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Justtable</title>
+    <title>SPA Ветклиники</title>
 </head>
-<body>
+
+<span style="float:left;">
+<h2>SPA Ветклиники</h2>
+</span>
+
 <div>
-    <h1>Justtable</h1>
+    <h2 style="text-align:right">Вы <%= user.name %></h2>
     <div class="btn-group">
-        <h4>Вы вошли как <%= user.name %> (id: <%= user.id %>)</h4>
-        <button onclick="document.location='/users/logout'">Logout</button>
+        <button style="float: right;" onclick="document.location='/users/logout'">Logout</button>
         <button onclick="NotImplemented()">Кнопка2</button>
         <button onclick="NotImplemented()">Кнопка3</button>
         <button onclick="NotImplemented()">Кнопка4</button>
     </div>
 </div>
+<br><br><br>
 
 
-
-<span style="float:left;">
+<span style="float:right;">
     <h4>Новый пользователь:</h4>
 <form name="createform" action="/users/justtable/add" method="POST">
     <div>
@@ -100,7 +103,7 @@
     </div>
 </form>
 </span>
-<span style="float:right;">
+<span style="float:left;">
     <h4>Фильтрация:</h4>
 <form name="filterform" action="?" method="GET">
     <div>
@@ -116,13 +119,12 @@
                 name="value"
                 placeholder="Значение"
         />
-        <input
-                type="entity"
-                id="entity"
-                name="entity"
-                placeholder="Сущность"
-                required
-        />
+        <select id="entity" name="entity">
+            <option value="user">user</option>
+            <option value="call">call</option>
+            <option value="order">order</option>
+            <option value="затычка">затычка</option>
+        </select>
     </div>
     <div>
         <input type="submit" value="Select" />
@@ -130,6 +132,7 @@
 </form>
 </span>
 
+<h1 style="padding: 100px"></h1>
 
 <% if (rows.length > 0) { %>
 <table>
