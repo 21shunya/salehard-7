@@ -142,7 +142,12 @@ app.post(
 
 // ====НАЧАЛО БЛОКА @info здесь можно писать свои эндпоинты, и по-хорошему логику выносить в файлы отдельные в папке services
 // пример импорта есть в самом начале документа
-app.get("/users/justtable", checkNotAuthenticated, (req, res) => {
+app.get("/users/justtable/:key?/:value?", checkNotAuthenticated, (req, res) => {
+    const { key, value } = req.params;
+    if (key != undefined && value != undefined) {
+        console.log('Запрос должен фильтроваться', {key, value})
+        return renderJustTable(req, res, {key, value})
+    }
     return renderJustTable(req, res)
 });
 
