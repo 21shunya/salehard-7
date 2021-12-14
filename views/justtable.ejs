@@ -68,7 +68,7 @@
 
 
 <span style="float:left;">
-    <h4>Новая запись:</h4>
+    <h4>Новый пользователь:</h4>
 <form name="createform" action="/users/justtable/add" method="POST">
     <div>
         <input
@@ -126,15 +126,12 @@
 </span>
 
 
-
+<% if (rows.length > 0) { %>
 <table>
     <tr>
-        <th>id</th>
-        <th>name</th>
-        <th>phone</th>
-        <th>password</th>
-        <th>created</th>
-        <th>updated</th>
+        <% for (propertyname of Object.getOwnPropertyNames(rows[0])) { %>
+            <td><%= propertyname %></td>
+            <% } %>
         <th>затычка</th>
         <th>Удалить (на себе не вызывать!!)</th>
     </tr>
@@ -142,17 +139,16 @@
 <% for (var row of rows ) { %>
     <% var swapcolor = ['#f2f2f2', '#A9A9A9'] %>
     <tr style='background-color:<%= swapcolor[i++%2] %>'>
-        <td><%= row.id %></td>
-        <td><%= row.name %></td>
-        <td><%= row.phone %></td>
-        <td><%= row.password %></td>
-        <td><%= row.created %></td>
-        <td><%= row.updated %></td>
+        <% for (propertyname of Object.getOwnPropertyNames(row)) { %>
+            <td><%= row[propertyname] %></td>
+        <% } %>
         <td><button type="button">Кнопка1</button></td>
         <td><button onclick="document.location='/justtabledeleterow/<%= row.id %>'">Delete</button></td>
     </tr>
 <% } %>
-
 </table>
+<% } else { %>
+    <h1>No data</h1>
+<% } %>
 </body>
 </html>
