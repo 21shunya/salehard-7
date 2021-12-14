@@ -55,31 +55,34 @@
 </head>
 <body>
 <div>
-    <h1>Просто пример таблицы (select * from "user")</h1>
+    <h1>Justtable</h1>
     <div class="btn-group">
+        <h4>Вы вошли как <%= user.name %> (id: <%= user.id %>)</h4>
         <button onclick="document.location='/users/logout'">Logout</button>
         <button onclick="NotImplemented()">Кнопка2</button>
         <button onclick="NotImplemented()">Кнопка3</button>
         <button onclick="NotImplemented()">Кнопка4</button>
     </div>
-    <h3>Hello, <%= user.name %> (<%= user.id %>) (Показывает name+id текущего пользователя)</h3>
 </div>
 
-<h2>Форма для добавления новой записи:</h2>
+
+
+<span style="float:left;">
+    <h4>Новая запись:</h4>
 <form name="createform" action="/users/justtable/add" method="POST">
     <div>
         <input
                 type="name"
                 id="name"
                 name="name"
-                placeholder="Name"
+                placeholder="Имя"
                 required
         />
         <input
                 type="phone"
                 id="phone"
                 name="phone"
-                placeholder="phone"
+                placeholder="Телефон"
                 required
         />
     </div>
@@ -88,7 +91,7 @@
                 type="password"
                 id="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Пароль"
                 required
         />
     </div>
@@ -96,22 +99,23 @@
         <input type="submit" value="Create" />
     </div>
 </form>
-
-<h2>Форма для фильтрации:</h2>
+</span>
+<span style="float:right;">
+    <h4>Фильтрация:</h4>
 <form name="filterform" action="/users/justtable/" method="GET">
     <div>
         <input
                 type="key"
                 id="key"
                 name="key"
-                placeholder="key"
+                placeholder="Ключ"
                 required
         />
         <input
                 type="value"
                 id="value"
                 name="value"
-                placeholder="value"
+                placeholder="Значение"
                 required
         />
     </div>
@@ -119,6 +123,9 @@
         <input type="submit" value="Select" />
     </div>
 </form>
+</span>
+
+
 
 <table>
     <tr>

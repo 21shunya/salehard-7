@@ -52,13 +52,6 @@ app.get("/users/login", checkAuthenticated, (req, res) => {
   res.render("login.ejs");
 });
 
-app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
-  console.log('Запрос от авторизованного лица? =>' ,req.isAuthenticated());
-  res.render("dashboard.ejs", { user: req.user.name });
-});
-
-
-
 app.get("/users/logout", (req, res) => {
   req.logout();
   res.redirect("/users/login");
@@ -133,7 +126,7 @@ app.post("/users/register", async (req, res) => {
 app.post(
   "/users/login",
   passport.authenticate("local", {
-    successRedirect: "/users/dashboard",
+    successRedirect: "/users/justtable",
     failureRedirect: "/users/login",
     failureFlash: true
   })
@@ -144,7 +137,6 @@ app.post(
 // пример импорта есть в самом начале документа
 app.get("/users/justtable", checkNotAuthenticated, (req, res) => {
     const { key, value } = req.query;
-    console.log(req)
     if (key != undefined && value != undefined) {
         console.log('Запрос должен фильтроваться', {key, value})
         return renderJustTable(req, res, {key, value})
@@ -181,7 +173,7 @@ app.get("/justtabledeleterow/:id", checkNotAuthenticated, (req, res) => {
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect("/users/dashboard");
+    return res.redirect("/users/justtable");
   }
   next();
 }
