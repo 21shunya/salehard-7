@@ -63,9 +63,9 @@
         <button onclick="NotImplemented()">Кнопка4</button>
     </div>
     <h3>Hello, <%= user.name %> (<%= user.id %>) (Показывает name+id текущего пользователя)</h3>
-    <h2>Форма для добавления новой записи:</h2>
 </div>
 
+<h2>Форма для добавления новой записи:</h2>
 <form name="createform" action="/users/justtable/add" method="POST">
     <div>
         <input
@@ -94,6 +94,29 @@
     </div>
     <div>
         <input type="submit" value="Create" />
+    </div>
+</form>
+
+<h2>Форма для фильтрации:</h2>
+<form name="filterform" action="/users/justtable/" method="GET">
+    <div>
+        <input
+                type="key"
+                id="key"
+                name="key"
+                placeholder="key"
+                required
+        />
+        <input
+                type="value"
+                id="value"
+                name="value"
+                placeholder="value"
+                required
+        />
+    </div>
+    <div>
+        <input type="submit" value="Select" />
     </div>
 </form>
 

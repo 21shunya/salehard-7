@@ -142,15 +142,16 @@ app.post(
 
 // ====НАЧАЛО БЛОКА @info здесь можно писать свои эндпоинты, и по-хорошему логику выносить в файлы отдельные в папке services
 // пример импорта есть в самом начале документа
-app.get("/users/justtable/:key?/:value?", checkNotAuthenticated, (req, res) => {
-    const { key, value } = req.params;
+app.get("/users/justtable", checkNotAuthenticated, (req, res) => {
+    const { key, value } = req.query;
+    console.log(req)
     if (key != undefined && value != undefined) {
         console.log('Запрос должен фильтроваться', {key, value})
         return renderJustTable(req, res, {key, value})
     }
     return renderJustTable(req, res)
 });
-
+// @info браузер жалуется на то что в форме для фильтрации и в форме для создания новой записи имеются дивы с одинаковыми именами
 app.post("/users/justtable/add", checkNotAuthenticated, (req, res) => {
     //console.log(req.body)
     return renderJustTableAdd(req, res)
