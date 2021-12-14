@@ -48,7 +48,7 @@ app.get("/users/register", checkAuthenticated, (req, res) => {
 
 app.get("/users/login", checkAuthenticated, (req, res) => {
   // flash sets a messages variable. passport sets the error message
-  console.log(req.session.flash.error);
+  // console.log(req.session.flash.error);
   res.render("login.ejs");
 });
 
@@ -65,18 +65,18 @@ app.get("/users/logout", (req, res) => {
 });
 
 app.post("/users/register", async (req, res) => {
-  let { name, email, password, password2 } = req.body;
+  let { name, phone, password, password2 } = req.body;
 
   let errors = [];
 
   console.log({
     name,
-    email,
+    phone,
     password,
     password2
   });
 
-  if (!name || !email || !password || !password2) {
+  if (!name || !phone || !password || !password2) {
     errors.push({ message: "Please enter all fields" });
   }
 
@@ -89,15 +89,15 @@ app.post("/users/register", async (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.render("register", { errors, name, email, password, password2 });
+    res.render("register", { errors, name, phone, password, password2 });
   } else {
-    hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
+    // hashedPassword = await bcrypt.hash(password, 10); // @info хэширование
+    // console.log(hashedPassword);
     // Validation passed
     pool.query(
-      `SELECT * FROM users
-        WHERE email = $1`,
-      [email],
+      `SELECT * FROM "user"
+        WHERE name = $1`,
+      [name],
       (err, results) => {
         if (err) {
           console.log(err);
@@ -106,20 +106,21 @@ app.post("/users/register", async (req, res) => {
 
         if (results.rows.length > 0) {
           return res.render("register", {
-            message: "Email already registered"
+            message: "Name already registered"
           });
         } else {
           pool.query(
-            `INSERT INTO users (name, email, password)
+            `INSERT INTO "user" (name, phone, password)
                 VALUES ($1, $2, $3)
-                RETURNING id, password`,
-            [name, email, hashedPassword],
+                RETURNING id`,
+            [name, phone, password],
             (err, results) => {
               if (err) {
                 throw err;
               }
               console.log(results.rows);
-              req.flash("success_msg", "You are now registered. Please log in");
+              console.log('Человек зарегистрирован. Data: ', { name, phone, password})
+
               res.redirect("/users/login");
             }
           );
