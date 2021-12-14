@@ -126,7 +126,7 @@ app.post("/users/register", async (req, res) => {
 app.post(
   "/users/login",
   passport.authenticate("local", {
-    successRedirect: "/users/justtable",
+    successRedirect: "/users/justtable?entity=user",
     failureRedirect: "/users/login",
     failureFlash: true
   })
@@ -135,10 +135,11 @@ app.post(
 
 // ====НАЧАЛО БЛОКА @info здесь можно писать свои эндпоинты, и по-хорошему логику выносить в файлы отдельные в папке services
 // пример импорта есть в самом начале документа
-app.get("/users/justtable/:entity", checkNotAuthenticated, (req, res) => {
-    const { entity } = req.params;
-    const { key, value } = req.query;
-    if (key != undefined && value != undefined) {
+app.get("/users/justtable", checkNotAuthenticated, (req, res) => {
+
+    const { key, value, entity } = req.query;
+
+    if (key != undefined && value != undefined && key != '' && value != '') {
         console.log('Запрос должен фильтроваться', {key, value})
         return renderJustTable(req, res, entity, {key, value})
     }
@@ -162,7 +163,7 @@ app.get("/justtabledeleterow/:id", checkNotAuthenticated, (req, res) => {
                 throw err;
             }
 
-            res.redirect("/users/justtable");
+            res.redirect("/users/justtable?entity=user");
         }
     );
 
@@ -174,7 +175,7 @@ app.get("/justtabledeleterow/:id", checkNotAuthenticated, (req, res) => {
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect("/users/justtable");
+    return res.redirect("/users/justtable?entity=user");
   }
   next();
 }

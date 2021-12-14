@@ -102,20 +102,25 @@
 </span>
 <span style="float:right;">
     <h4>Фильтрация:</h4>
-<form name="filterform" action="/users/justtable/" method="GET">
+<form name="filterform" action="?" method="GET">
     <div>
         <input
                 type="key"
                 id="key"
                 name="key"
                 placeholder="Ключ"
-                required
         />
         <input
                 type="value"
                 id="value"
                 name="value"
                 placeholder="Значение"
+        />
+        <input
+                type="entity"
+                id="entity"
+                name="entity"
+                placeholder="Сущность"
                 required
         />
     </div>
@@ -148,7 +153,8 @@
 <% } %>
 </table>
 <% } else { %>
-    <h1>No data</h1>
+    <table></table>
+    <h1>No data for this entity</h1>
 <% } %>
 </body>
 </html>
