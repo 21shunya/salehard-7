@@ -14,8 +14,34 @@
     tr:hover td{
         background: #F08080;
     }
+    .btn-group button {
+        background-color: #696969;
+        border: 1px solid whitesmoke;
+        color: white;
+        padding: 10px 24px;
+        cursor: pointer;
+        float: left;
+    }
+
+    .btn-group button:not(:last-child) {
+        border-right: none;
+    }
+
+    .btn-group:after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    .btn-group button:hover {
+        background-color: #3e8e41;
+    }
 
 </style>
+<script>
+    function NotImplemented(){
+        return alert('Не реализовано. Затычка.')
+    }
+</script>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -28,11 +54,17 @@
     <title>Justtable</title>
 </head>
 <body>
-<h1>Просто пример таблицы (select * from "user")</h1>
-
-<a href="/users/logout">Logout</a>
-
-<h4>Hello <%= user %></h4>
+<div>
+    <h1>Просто пример таблицы (select * from "user")</h1>
+    <div class="btn-group">
+        <button onclick="document.location='/users/logout'">Logout</button>
+        <button onclick="NotImplemented()">Кнопка2</button>
+        <button onclick="NotImplemented()">Кнопка3</button>
+        <button onclick="NotImplemented()">Кнопка4</button>
+    </div>
+    <h3>Hello, <%= user.name %> (<%= user.id %>) (Показывает name+id текущего пользователя)</h3>
+    <h2>Форма для добавления новой записи:</h2>
+</div>
 
 <form name="createform" action="/users/justtable/add" method="POST">
     <div>

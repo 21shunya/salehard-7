@@ -5,7 +5,7 @@ const renderJustTable = (req, res) => {
     pool.query(`SELECT * FROM "user"`, [], (err, results) => {
         rows = results.rows;
         // console.log('aa', rows)
-        res.render("justtable.ejs", { user: req.user.name, rows: rows, pool: pool });
+        res.render("justtable.ejs", { user: req.user, rows: rows, pool: pool });
     });
 }
 

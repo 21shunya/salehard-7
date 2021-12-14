@@ -39,7 +39,7 @@ app.use(passport.session());
 app.use(flash());
 
 app.get("/", (req, res) => {
-  res.render("index");
+    res.redirect("/users/login");
 });
 
 app.get("/users/register", checkAuthenticated, (req, res) => {
@@ -61,7 +61,7 @@ app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
 
 app.get("/users/logout", (req, res) => {
   req.logout();
-  res.render("index", { message: "You have logged out successfully" });
+  res.redirect("/users/login");
 });
 
 app.post("/users/register", async (req, res) => {
