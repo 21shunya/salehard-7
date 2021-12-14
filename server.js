@@ -1,3 +1,12 @@
+const {renderJustTable} = require("./services/justtable");
+const {renderJustTableAdd} = require("./services/justtableadd")
+
+
+
+
+
+
+// ======@info ======НАЧАЛО= эту хуйню не трогать, 95% шанс что-то сломать============================================================
 const express = require("express");
 const { pool } = require("./dbConfig");
 const bcrypt = require("bcrypt");
@@ -6,19 +15,13 @@ const flash = require("express-flash");
 const session = require("express-session");
 require("dotenv").config();
 const app = express();
-
-const PORT = process.env.PORT || 3000;
-
+const PORT = 3000;
 const initializePassport = require("./passportConfig");
-
 initializePassport(passport);
-
 // Middleware
-
 // Parses details from a form
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
-
 app.use(
   session({
     // Key we want to keep secret which will encrypt all of our information
@@ -51,8 +54,10 @@ app.get("/users/login", checkAuthenticated, (req, res) => {
 
 app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
-  res.render("dashboard", { user: req.user.name });
+  res.render("dashboard.ejs", { user: req.user.name });
 });
+
+
 
 app.get("/users/logout", (req, res) => {
   req.logout();
@@ -132,6 +137,40 @@ app.post(
     failureFlash: true
   })
 );
+// =====@info =======КОНЕЦ= хуйни которую нельзя трогать===============================================================
+
+// ====НАЧАЛО БЛОКА @info здесь можно писать свои эндпоинты, и по-хорошему логику выносить в файлы отдельные в папке services
+// пример импорта есть в самом начале документа
+app.get("/users/justtable", checkNotAuthenticated, (req, res) => {
+    return renderJustTable(req, res)
+});
+
+app.post("/users/justtable/add", checkNotAuthenticated, (req, res) => {
+    //console.log(req.body)
+    return renderJustTableAdd(req, res)
+});
+
+app.get("/justtabledeleterow/:id", checkNotAuthenticated, (req, res) => {
+    const { id } = req.params;
+    console.log('Вызвано удаление из justtable, id:', id);
+
+    pool.query(
+        `DELETE FROM "user" WHERE id = $1`,
+        [id],
+        (err, results) => {
+            if (err) {
+                throw err;
+            }
+
+            res.redirect("/users/justtable");
+        }
+    );
+
+
+
+});
+
+// ====КОНЕЦ БЛОКА @info ==============================================================================================
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {

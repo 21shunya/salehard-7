@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+    th, td {
+        border: solid 1px #000;
+        text-align: left;
+        padding: 5px;
+    }
+    tr:hover td{
+        background: #F08080;
+    }
+
+</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Justtable</title>
+</head>
+<body>
+<h1>Просто пример таблицы (select * from "user")</h1>
+
+<a href="/users/logout">Logout</a>
+
+<h4>Hello <%= user %></h4>
+
+<form name="createform" action="/users/justtable/add" method="POST">
+    <div>
+        <input
+                type="name"
+                id="name"
+                name="name"
+                placeholder="Name"
+                required
+        />
+        <input
+                type="phone"
+                id="phone"
+                name="phone"
+                placeholder="phone"
+                required
+        />
+    </div>
+    <div>
+        <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                required
+        />
+    </div>
+    <div>
+        <input type="submit" value="Create" />
+    </div>
+</form>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>phone</th>
+        <th>password</th>
+        <th>created</th>
+        <th>updated</th>
+        <th></th>
+        <th></th>
+    </tr>
+<% var i = 1; %>
+<% for (var row of rows ) { %>
+    <% var swapcolor = ['#f2f2f2', '#A9A9A9'] %>
+    <tr style='background-color:<%= swapcolor[i++%2] %>'>
+        <td><%= row.id %></td>
+        <td><%= row.name %></td>
+        <td><%= row.phone %></td>
+        <td><%= row.password %></td>
+        <td><%= row.created %></td>
+        <td><%= row.updated %></td>
+        <td><button type="button">Кнопка1</button></td>
+        <td><a class="btn btn-raised btn-danger" href="/justtabledeleterow/<%= row.id %>">Delete</a></td>
+    </tr>
+<% } %>
+
+</table>
+</body>
+</html>
