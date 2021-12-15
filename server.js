@@ -1,5 +1,5 @@
-const {renderJustTable} = require("./services/justtable");
-const {renderJustTableAdd} = require("./services/justtableadd")
+const {spaSelect} = require("./services/spaSelect");
+const {spaInsert} = require("./services/spaInsert")
 
 
 
@@ -140,14 +140,14 @@ app.get("/users/justtable", checkNotAuthenticated, (req, res) => {
 
     if (key != undefined && value != undefined && key != '' && value != '') {
         console.log('Запрос должен фильтроваться', {key, value})
-        return renderJustTable(req, res, entity, {key, value})
+        return spaSelect(req, res, entity, {key, value})
     }
-    return renderJustTable(req, res, entity)
+    return spaSelect(req, res, entity)
 });
 // @info браузер жалуется на то что в форме для фильтрации и в форме для создания новой записи имеются дивы с одинаковыми именами
 app.post("/users/justtable/add", checkNotAuthenticated, (req, res) => {
     //console.log(req.body)
-    return renderJustTableAdd(req, res)
+    return spaInsert(req, res)
 });
 
 app.get("/justtabledeleterow/:id", checkNotAuthenticated, (req, res) => {

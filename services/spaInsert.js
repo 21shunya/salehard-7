@@ -1,6 +1,6 @@
 const {pool} = require("../dbConfig");
 
-const renderJustTableAdd = (req, res) => {
+const spaInsert = (req, res) => {
     let { name, phone, password,  } = req.body;
     console.log('Запрос на создание, содержимое:', name,phone,password)
     pool.query(
@@ -19,4 +19,4 @@ const renderJustTableAdd = (req, res) => {
     );
 }
 
-module.exports = { renderJustTableAdd };
+module.exports = { spaInsert };

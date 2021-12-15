@@ -1,6 +1,6 @@
 const {pool} = require("../dbConfig");
 
-const renderJustTable = (req, res, entity, filterParams) => {
+const spaSelect = (req, res, entity, filterParams) => {
     if (filterParams == undefined){
         // @info запрос без фильтра
         pool.query(`SELECT * FROM "` + entity + `"`, [], (err, results) => {
@@ -26,4 +26,4 @@ const renderJustTable = (req, res, entity, filterParams) => {
     }
 }
 
-module.exports = { renderJustTable };
+module.exports = { spaSelect };
