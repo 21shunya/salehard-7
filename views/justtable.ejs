@@ -152,7 +152,7 @@
         <% for (propertyname of Object.getOwnPropertyNames(rows[0])) { %>
             <th style="border: solid 1px #000; text-align: left;"><%= propertyname %></th>
             <% } %>
-        <th style="border: solid 1px #000; text-align: left;">затычка</th>
+        <th style="border: solid 1px #000; text-align: left;">Изменить</th>
         <th style="border: solid 1px #000; text-align: left;">Удалить (на себе не вызывать!!)</th>
     </tr>
 <% var i = 1; %>
@@ -162,7 +162,7 @@
         <% for (propertyname of Object.getOwnPropertyNames(row)) { %>
             <td style="border: solid 1px #000; text-align: left;"><%= row[propertyname] %></td>
         <% } %>
-        <td style="border: solid 1px #000; text-align: left;"><button type="button">Кнопка1</button></td>
+        <td style="border: solid 1px #000; text-align: left;"><button type="submit" data-target="#modal-edit-user-<%= row.id %>">Кнопка1</button></td>
         <td style="border: solid 1px #000; text-align: left;"><button onclick="document.location='/justtabledeleterow/<%= row.id %>'">Delete</button></td>
     </tr>
 <% } %>

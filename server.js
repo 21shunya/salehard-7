@@ -70,15 +70,15 @@ app.post("/users/register", async (req, res) => {
   });
 
   if (!name || !phone || !password || !password2) {
-    errors.push({ message: "Please enter all fields" });
+    errors.push({ message: "Заполните все поля" });
   }
 
   if (password.length < 6) {
-    errors.push({ message: "Password must be a least 6 characters long" });
+    errors.push({ message: "Пароль должен иметь длину минимум 6 " });
   }
 
   if (password !== password2) {
-    errors.push({ message: "Passwords do not match" });
+    errors.push({ message: "Пароли не совпадают" });
   }
 
   if (errors.length > 0) {
