@@ -84,8 +84,8 @@ app.post("/users/register", async (req, res) => {
   if (errors.length > 0) {
     res.render("register", { errors, name, phone, password, password2 });
   } else {
-    // hashedPassword = await bcrypt.hash(password, 10); // @info хэширование
-    // console.log(hashedPassword);
+    const hashedPassword = await bcrypt.hash(password, 10); // @info хэширование
+    console.log(hashedPassword);
     // Validation passed
     pool.query(
       `SELECT * FROM "user"
@@ -98,21 +98,20 @@ app.post("/users/register", async (req, res) => {
         console.log(results.rows);
 
         if (results.rows.length > 0) {
-          return res.render("register", {
-            message: "Name already registered"
-          });
+            errors.push({ message: "Такой пользователь уже существует" });
+            res.render("register", { errors, name, phone, password, password2 });
         } else {
           pool.query(
             `INSERT INTO "user" (name, phone, password)
-                VALUES ($1, $2, $3) // @info Записывается сырой пароль!! использовать bcrypt hash password
+                VALUES ($1, $2, $3)
                 RETURNING id`,
-            [name, phone, password],
+            [name, phone, hashedPassword],
             (err, results) => {
               if (err) {
                 throw err;
               }
               console.log(results.rows);
-              console.log('Человек зарегистрирован. Data: ', { name, phone, password})
+              console.log('Человек зарегистрирован. Data: ', { name, phone, password, hashedPassword })
 
               res.redirect("/users/login");
             }
