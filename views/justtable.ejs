@@ -1,5 +1,18 @@
 <!DOCTYPE html>
+<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"/>
 <style>
+    sortable {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+    .sortable {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
     table {
         border-collapse: collapse;
         border-spacing: 0;
@@ -9,7 +22,6 @@
     th, td {
         border: solid 1px #000;
         text-align: left;
-        padding: 5px;
     }
     tr:hover td{
         background: #F08080;
@@ -53,16 +65,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>SPA Ветклиники</title>
 </head>
-
+<body>
 <span style="float:left;">
 <h2>SPA Ветклиники</h2>
 </span>
 
 <div>
-    <h2 style="text-align:right">Вы <%= user.name %></h2>
+    <h2 style="text-align:right">Вход от имени <%= user.name %></h2>
     <div class="btn-group">
         <button style="float: right;" onclick="document.location='/users/logout'">Logout</button>
-        <button onclick="NotImplemented()">Кнопка2</button>
+        <button onclick="document.location=''">Обновить</button>
         <button onclick="NotImplemented()">Кнопка3</button>
         <button onclick="NotImplemented()">Кнопка4</button>
     </div>
@@ -135,23 +147,23 @@
 <h1 style="padding: 100px"></h1>
 
 <% if (rows.length > 0) { %>
-<table>
-    <tr>
+<table class="sortable">
+    <tr style="border: solid 1px #000; text-align: left;">
         <% for (propertyname of Object.getOwnPropertyNames(rows[0])) { %>
-            <td><%= propertyname %></td>
+            <th style="border: solid 1px #000; text-align: left;"><%= propertyname %></th>
             <% } %>
-        <th>затычка</th>
-        <th>Удалить (на себе не вызывать!!)</th>
+        <th style="border: solid 1px #000; text-align: left;">затычка</th>
+        <th style="border: solid 1px #000; text-align: left;">Удалить (на себе не вызывать!!)</th>
     </tr>
 <% var i = 1; %>
 <% for (var row of rows ) { %>
     <% var swapcolor = ['#f2f2f2', '#A9A9A9'] %>
-    <tr style='background-color:<%= swapcolor[i++%2] %>'>
+    <tr style='background-color:<%= swapcolor[i++%2] %>; border: solid 1px #000; text-align: left;'>
         <% for (propertyname of Object.getOwnPropertyNames(row)) { %>
-            <td><%= row[propertyname] %></td>
+            <td style="border: solid 1px #000; text-align: left;"><%= row[propertyname] %></td>
         <% } %>
-        <td><button type="button">Кнопка1</button></td>
-        <td><button onclick="document.location='/justtabledeleterow/<%= row.id %>'">Delete</button></td>
+        <td style="border: solid 1px #000; text-align: left;"><button type="button">Кнопка1</button></td>
+        <td style="border: solid 1px #000; text-align: left;"><button onclick="document.location='/justtabledeleterow/<%= row.id %>'">Delete</button></td>
     </tr>
 <% } %>
 </table>
