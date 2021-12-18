@@ -1,12 +1,12 @@
 const {pool} = require("../dbConfig");
 
 const spaInsert = (req, res) => {
-    let { name, phone, password,  } = req.body;
+    let { name, phone, password  } = req.body;
     console.log('Запрос на создание, содержимое:', name,phone,password)
     pool.query(
-        `INSERT INTO "user" (name, phone, password)
+        `INSERT INTO "user" (name,)
                 VALUES ($1, $2, $3)
-                RETURNING id, password;`, // @info Записывается сырой пароль!! использовать bcrypt hash password
+                RETURNING "Id", "Password";`, // @info Записывается сырой пароль!! использовать bcrypt hash password
         [name, phone, password],
         (err, results) => {
             if (err) {

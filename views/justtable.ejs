@@ -81,9 +81,43 @@
 </div>
 <br><br><br>
 
+<span style="float:right;">
+    <h4>Получить отчет: </h4>
+<form name="createform" action="/report" method="POST">
+    <div>
+        <input
+                type="number"
+                id="id"
+                name="Id"
+                placeholder="id сотрудника"
+                required
+        />
+    </div>
+    <div>
+        <input
+            type="date"
+            id="date"
+            name="start_date"
+            placeholder="Дата начала"
+            required
+        />
+
+        <input
+            type="date"
+            id="date"
+            name="end_date"
+            placeholder="Дата конца"
+            required
+        />
+    </div>
+    <div>
+        <input type="submit" value="Сформировать" />
+    </div>
+</form>
+</span>
 
 <span style="float:right;">
-    <h4>Новый пользователь:</h4>
+    <h4>Новая задача: </h4>
 <form name="createform" action="/users/justtable/add" method="POST">
     <div>
         <input

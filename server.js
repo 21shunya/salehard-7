@@ -20,6 +20,7 @@ const app = express();
 const PORT = 3000;
 const initializePassport = require("./passportConfig");
 const {spaDelete} = require("./services/spaDelete");
+const { spaReport } = require("./services/spaReport");
 initializePassport(passport);
 // Middleware
 // Parses details from a form
@@ -155,6 +156,9 @@ app.get("/delete/:entity/:id", checkNotAuthenticated, (req, res) => {
     return spaDelete(res, entity, id)
 });
 
+app.post("/report/", (req, res) => {
+  return spaReport(req, res)
+})
 // ====КОНЕЦ БЛОКА @info ==============================================================================================
 
 function checkAuthenticated(req, res, next) {
