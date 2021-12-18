@@ -1,7 +1,9 @@
 const {spaSelect} = require("./services/spaSelect");
 const {spaInsert} = require("./services/spaInsert")
 
-
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 
 
@@ -59,23 +61,19 @@ app.get("/users/logout", (req, res) => {
 });
 
 app.post("/users/register", async (req, res) => {
-  let { name, phone, password, password2 } = req.body;
+  let { Nickname, RoleId, password, password2 } = req.body;
 
   let errors = [];
 
   console.log({
-    name,
-    phone,
+    Nickname,
+    RoleId,
     password,
     password2
   });
 
-  if (!name || !phone || !password || !password2) {
+  if (!Nickname || !RoleId || !password || !password2) {
     errors.push({ message: "Заполните все поля" });
-  }
-
-  if (password.length < 6) {
-    errors.push({ message: "Пароль должен иметь длину минимум 6 " });
   }
 
   if (password !== password2) {
@@ -83,15 +81,17 @@ app.post("/users/register", async (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.render("register", { errors, name, phone, password, password2 });
+    res.render("register", { errors, Nickname, RoleId, password, password2 });
   } else {
-    const hashedPassword = await bcrypt.hash(password, 10); // @info хэширование
+    // const hashedPassword = await bcrypt.hash(password, 10); // @info хэширование
+    const hashedPassword = password;
+    const id = getRandomInt(10000)
     console.log(hashedPassword);
     // Validation passed
     pool.query(
-      `SELECT * FROM "user"
-        WHERE name = $1`,
-      [name],
+      `SELECT * FROM "Employee"
+        WHERE "Nickname" = $1`,
+      [Nickname],
       (err, results) => {
         if (err) {
           console.log(err);
@@ -100,19 +100,18 @@ app.post("/users/register", async (req, res) => {
 
         if (results.rows.length > 0) {
             errors.push({ message: "Такой пользователь уже существует" });
-            res.render("register", { errors, name, phone, password, password2 });
+            res.render("register", { errors, Nickname, RoleId, password, password2 });
         } else {
-          pool.query(
-            `INSERT INTO "user" (name, phone, password)
-                VALUES ($1, $2, $3)
-                RETURNING id`,
-            [name, phone, hashedPassword],
+          pool.query( // @info ИЗМЕНИТЬ ДЛЯ РЕГИСТРАЦИИ
+            `INSERT INTO "Employee" ("Id", "Nickname", "RoleId", "Password") 
+                VALUES ($1, $2, $3, $4)`,
+            [id, Nickname, RoleId, hashedPassword],
             (err, results) => {
               if (err) {
                 throw err;
               }
               console.log(results.rows);
-              console.log('Человек зарегистрирован. Data: ', { name, phone, password, hashedPassword })
+              console.log('Человек зарегистрирован. Data: ', { Nickname, RoleId, hashedPassword })
 
               res.redirect("/users/login");
             }
@@ -126,7 +125,7 @@ app.post("/users/register", async (req, res) => {
 app.post(
   "/users/login",
   passport.authenticate("local", {
-    successRedirect: "/users/justtable?entity=user",
+    successRedirect: "/users/justtable?entity=Employee",
     failureRedirect: "/users/login",
     failureFlash: true
   })
@@ -160,7 +159,7 @@ app.get("/delete/:entity/:id", checkNotAuthenticated, (req, res) => {
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect("/users/justtable?entity=user");
+    return res.redirect("/users/justtable?entity=Employee");
   }
   next();
 }

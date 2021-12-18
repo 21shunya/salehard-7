@@ -71,7 +71,7 @@
 </span>
 
 <div>
-    <h2 style="text-align:right">Вход от имени <%= user.name %></h2>
+    <h2 style="text-align:right">Вход от имени <%= user.Nickname %></h2>
     <div class="btn-group">
         <button style="float: right;" onclick="document.location='/users/logout'">Logout</button>
         <button onclick="document.location=''">Обновить</button>
@@ -132,10 +132,10 @@
                 placeholder="Значение"
         />
         <select id="entity" name="entity">
-            <option value="user">user</option>
-            <option value="call">call</option>
-            <option value="order">order</option>
-            <option value="затычка">затычка</option>
+            <option value="Employee">user</option>
+            <option value="Task">Tasks</option>
+            <option value="ContactPerson">Contact Person</option>
+            <option value="Organization">Organization</option>
         </select>
     </div>
     <div>
@@ -158,12 +158,12 @@
 <% var i = 1; %>
 <% for (var row of rows ) { %>
     <% var swapcolor = ['#f2f2f2', '#A9A9A9'] %>
-    <tr style='background-color:<%= swapcolor[i++%2] %>; border: solid 1px #000; text-align: left;'>
+    <tr style='background-color: <%= swapcolor[i++%2] %>; border: solid 1px #000; text-align: left;'>
         <% for (propertyname of Object.getOwnPropertyNames(row)) { %>
             <td style="border: solid 1px #000; text-align: left;"><%= row[propertyname] %></td>
         <% } %>
-        <td style="border: solid 1px #000; text-align: left;"><button type="submit" data-target="#modal-edit-user-<%= row.id %>">Кнопка1</button></td>
-        <td style="border: solid 1px #000; text-align: left;"><button onclick="document.location='/delete/<%= entity %>/<%= row.id %>'">Delete</button></td>
+        <td style="border: solid 1px #000; text-align: left;"><button type="submit" data-target="#modal-edit-user-<%= row.Id %>">Кнопка1</button></td>
+        <td style="border: solid 1px #000; text-align: left;"><button onclick="document.location='/delete/<%= entity %>/<%= row.Id %>'">Delete</button></td>
     </tr>
 <% } %>
 </table>

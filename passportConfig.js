@@ -6,9 +6,9 @@ function initialize(passport) {
   console.log("Авторизация включена");
 
   const authenticateUser = (email, password, done) => {
-    console.log('Аутентификация юзера. Data:', email, password);
+    console.log("Аутентификация юзера. Data:", email, password);
     pool.query(
-      `SELECT * FROM "user" WHERE name = $1`,
+      `SELECT * FROM "Employee" WHERE "Nickname" = $1`,
       [email],
       (err, results) => {
         if (err) {
@@ -18,24 +18,26 @@ function initialize(passport) {
 
         if (results.rows.length > 0) {
           const user = results.rows[0];
-          console.log('Юзер успешно найден:', user);
+          console.log("Юзер успешно найден:", user);
 
-          // if (user.password == password){ // @info грубое сравнение паролей!!! Необходимо использовать bcrypt compare hashed password
-          //   return done(null, user);
-          // }
-          bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) {
-              console.log(err);
-            }
-            if (isMatch) {
-              return done(null, user);
-            } else {
-              return done(null, false, { message: "Password is incorrect" });
-            }
-          });
+          if (user.Password == password) {
+            // @info грубое сравнение паролей!!! Необходимо использовать bcrypt compare hashed password
+            console.log('паспорта совалпаи')
+            return done(null, user);
+          }
+          // bcrypt.compare(password, user.password, (err, isMatch) => {
+          //   if (err) {
+          //     console.log(err);
+          //   }
+          //   if (isMatch) {
+          //     return done(null, user);
+          //   } else {
+          //     return done(null, false, { message: "Password is incorrect" });
+          //   }
+          // });
         } else {
           return done(null, false, {
-            message: "No user with that email address"
+            message: "No user with that email address",
           });
         }
       }
@@ -48,15 +50,19 @@ function initialize(passport) {
       authenticateUser
     )
   );
-  passport.serializeUser((user, done) => done(null, user.id));
+  passport.serializeUser((user, done) => done(null, user.Id));
   passport.deserializeUser((id, done) => {
-    pool.query(`SELECT * FROM "user" WHERE id = $1`, [id], (err, results) => {
-      if (err) {
-        return done(err);
+    pool.query(
+      `SELECT * FROM "Employee" WHERE "Id" = $1`,
+      [id],
+      (err, results) => {
+        if (err) {
+          return done(err);
+        }
+        console.log(`Authorized user ID is ${results.rows[0].Id}`);
+        return done(null, results.rows[0]);
       }
-      console.log(`Authorized user ID is ${results.rows[0].id}`);
-      return done(null, results.rows[0]);
-    });
+    );
   });
 }
 

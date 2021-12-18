@@ -4,7 +4,7 @@ const spaDelete = (res, entity, id) => {
     console.log('Вызвано удаление из ' + entity+ ', id:', id);
 
     pool.query(
-        `DELETE FROM "${entity}" WHERE id = $1`,
+        `DELETE FROM "${entity}" WHERE "Id" = $1`,
         [id],
         (err, results) => {
             if (err) {

@@ -15,7 +15,7 @@ const spaSelect = (req, res, entity, filterParams) => {
     else{
         // @info запрос с фильтром
         const { key, value } = filterParams;
-        pool.query(`SELECT * FROM "` + entity + `" where ` + key + ` = $1`, [value], (err, results) => {
+        pool.query(`SELECT * FROM "` + entity + `" where "` + key + `" = $1`, [value], (err, results) => {
             if (err){
                 console.log(err);
             }
