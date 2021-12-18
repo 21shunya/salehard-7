@@ -17,6 +17,7 @@ require("dotenv").config();
 const app = express();
 const PORT = 3000;
 const initializePassport = require("./passportConfig");
+const {spaDelete} = require("./services/spaDelete");
 initializePassport(passport);
 // Middleware
 // Parses details from a form
@@ -150,24 +151,9 @@ app.post("/users/justtable/add", checkNotAuthenticated, (req, res) => {
     return spaInsert(req, res)
 });
 
-app.get("/justtabledeleterow/:id", checkNotAuthenticated, (req, res) => {
-    const { id } = req.params;
-    console.log('Вызвано удаление из justtable, id:', id);
-
-    pool.query(
-        `DELETE FROM "user" WHERE id = $1`,
-        [id],
-        (err, results) => {
-            if (err) {
-                throw err;
-            }
-
-            res.redirect("/users/justtable?entity=user");
-        }
-    );
-
-
-
+app.get("/delete/:entity/:id", checkNotAuthenticated, (req, res) => {
+    const { entity, id } = req.params;
+    return spaDelete(res, entity, id)
 });
 
 // ====КОНЕЦ БЛОКА @info ==============================================================================================

@@ -9,7 +9,7 @@ const spaSelect = (req, res, entity, filterParams) => {
             }
             const rows = results.rows;
             // console.log('aa', rows)
-            res.render("justtable.ejs", { user: req.user, rows: rows, pool: pool });
+            res.render("justtable.ejs", { user: req.user, rows: rows, pool: pool, entity: entity });
         });
     }
     else{
@@ -20,8 +20,8 @@ const spaSelect = (req, res, entity, filterParams) => {
                 console.log(err);
             }
             const rows = results.rows;
-            console.log('aa', rows)
-            res.render("justtable.ejs", { user: req.user, rows: rows, pool: pool });
+            console.log('aa', rows);
+            res.render("justtable.ejs", { user: req.user, rows: rows, pool: pool, entity: entity });
         });
     }
 }
