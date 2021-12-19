@@ -1,13 +1,20 @@
 const {pool} = require("../dbConfig");
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 
 const spaInsert = (req, res) => {
-    let { name, phone, password  } = req.body;
-    console.log('Запрос на создание, содержимое:', name,phone,password)
+    let { Deadline, AssigneeId, OrganizationId,  ContactPersonId, TypeId, PriorityId} = req.body;
+    const Id = getRandomInt(10000);
+    const CreatedAt = new Date().toISOString().replace('T', ' ').replace('Z', ' ').split('.')[0];
+    Deadline += ' 00:00:00' 
+    const OwnerId = req.user.Id
+    console.log('Запрос на создание, содержимое:', Id, OwnerId, CreatedAt, Deadline, AssigneeId, OrganizationId,  ContactPersonId, TypeId, PriorityId)
+
     pool.query(
-        `INSERT INTO "user" (name,)
-                VALUES ($1, $2, $3)
-                RETURNING "Id", "Password";`, // @info Записывается сырой пароль!! использовать bcrypt hash password
-        [name, phone, password],
+        `INSERT INTO "Task" ("Id", "OwnerId", "CreatedAt", "Deadline", "AssigneeId", "OrganizationId",  "ContactPersonId", "TypeId", "PriorityId")
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 );`,
+        [Id, OwnerId, CreatedAt, Deadline, AssigneeId, OrganizationId,  ContactPersonId, TypeId, PriorityId],
         (err, results) => {
             if (err) {
                 throw err;

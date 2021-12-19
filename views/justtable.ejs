@@ -63,7 +63,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SPA Ветклиники</title>
+    <title>жопный обосранный жууук</title>
 </head>
 <body>
 <span style="float:left;">
@@ -82,6 +82,68 @@
 <br><br><br>
 
 <span style="float:right;">
+    <h4>Новая задача: </h4>
+<form name="createform" action="/users/justtable/add" method="POST">
+    <div>
+        <div>
+            <label>Дедлайн</label>
+        <input
+            type="date"
+            id="date"
+            name="Deadline"
+            required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                id="name"
+                name="AssigneeId"
+                placeholder="Кому назначить"
+                required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                name="OrganizationId"
+                placeholder="Номер организации"
+                required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                name="ContactPersonId"
+                placeholder="Номер контактного лица"
+                required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                name="TypeId"
+                placeholder="Тип задачи"
+                required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                name="PriorityId"
+                placeholder="Приоритет"
+                required
+        />
+        </div>
+
+    </div>
+    <div>
+        <input type="submit" value="Create" />
+    </div>
+</form>
+</span>
+
+<span style="float:left;">
     <h4>Получить отчет: </h4>
 <form name="createform" action="/report" method="POST">
     <div>
@@ -116,39 +178,7 @@
 </form>
 </span>
 
-<span style="float:right;">
-    <h4>Новая задача: </h4>
-<form name="createform" action="/users/justtable/add" method="POST">
-    <div>
-        <input
-                type="name"
-                id="name"
-                name="name"
-                placeholder="Имя"
-                required
-        />
-        <input
-                type="phone"
-                id="phone"
-                name="phone"
-                placeholder="Телефон"
-                required
-        />
-    </div>
-    <div>
-        <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Пароль"
-                required
-        />
-    </div>
-    <div>
-        <input type="submit" value="Create" />
-    </div>
-</form>
-</span>
+
 <span style="float:left;">
     <h4>Фильтрация:</h4>
 <form name="filterform" action="?" method="GET">
