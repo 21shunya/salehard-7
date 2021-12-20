@@ -31,15 +31,16 @@
       <% } %>
     </ul>
 
-    <form action="/users/login" method="POST">
+    <form action="/users/login1" method="POST">
       <div>
-        <input
-          type="name"
-          id="email"
-          name="email"
-          placeholder="name"
-          required
-        />
+        <select id="role" name="role">
+          <option value="Admin">Admin</option>
+          <option value="Doctor">Doctor</option>
+          <option value="Staff">Staff</option>
+        </select>
+      </div>
+      <div>
+        <input type="name" id="name" name="name" placeholder="name" required />
       </div>
       <div>
         <input

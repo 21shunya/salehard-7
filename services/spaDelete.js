@@ -1,19 +1,19 @@
-const {pool} = require("../dbConfig");
+const { initConnection } = require("../dbConfig");
 
 const spaDelete = (res, entity, id) => {
-    console.log('Вызвано удаление из ' + entity+ ', id:', id);
+  console.log("Вызвано удаление из " + entity + ", id:", id);
 
-    pool.query(
-        `DELETE FROM "${entity}" WHERE "Id" = $1`,
-        [id],
-        (err, results) => {
-            if (err) {
-                throw err;
-            }
+  initConnection().query(
+    `DELETE FROM "${entity}" WHERE "id" = $1`,
+    [id],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
 
-            res.redirect(`/users/justtable?entity=${entity}`);
-        }
-    );
-}
+      res.redirect(`/users/justtable?entity=${entity}`);
+    }
+  );
+};
 
 module.exports = { spaDelete };

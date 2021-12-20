@@ -71,7 +71,7 @@
 </span>
 
 <div>
-    <h2 style="text-align:right">Вход от имени <%= user.Nickname %></h2>
+    <h2 style="text-align:right">Вход под ролью <%= rolename %></h2>
     <div class="btn-group">
         <button style="float: right;" onclick="document.location='/users/logout'">Logout</button>
         <button onclick="document.location=''">Обновить</button>
@@ -196,10 +196,24 @@
                 placeholder="Значение"
         />
         <select id="entity" name="entity">
-            <option value="Employee">user</option>
-            <option value="Task">Tasks</option>
-            <option value="ContactPerson">Contact Person</option>
-            <option value="Organization">Organization</option>
+            <option value="Administration">Administration</option>
+            <option value="Animal">Animal</option>
+            <option value="Appointment">Appointment</option>
+            <option value="Client">Client</option>
+            <option value="Clinic">Clinic</option>
+            <option value="Doctor">Doctor</option>
+            <option value="Food">Food</option>
+            <option value="History">History</option>
+            <option value="Medications">Medications</option>
+            <option value="Order">Order</option>
+            <option value="Order_Food">Order_Food</option>
+            <option value="Order_Medications">Order_Medications</option>
+            <option value="Pharmacy_staff">Pharmacy_staff</option>
+            <option value="Services">Services</option>
+            <option value="Services_Clinic">Services_Clinic</option>
+            <option value="Veterinary_Pharmacy">Veterinary_Pharmacy</option>
+            <option value="Veterinary_Pharmacy_Food">Veterinary_Pharmacy_Food</option>
+            <option value="Veterinary_Pharmacy_Medications">Veterinary_Pharmacy_Medications</option>
         </select>
     </div>
     <div>
@@ -227,7 +241,7 @@
             <td style="border: solid 1px #000; text-align: left;"><%= row[propertyname] %></td>
         <% } %>
         <td style="border: solid 1px #000; text-align: left;"><button type="submit" data-target="#modal-edit-user-<%= row.Id %>">Кнопка1</button></td>
-        <td style="border: solid 1px #000; text-align: left;"><button onclick="document.location='/delete/<%= entity %>/<%= row.Id %>'">Delete</button></td>
+        <td style="border: solid 1px #000; text-align: left;"><button onclick="document.location='/delete/<%= entity %>/<%= row.id %>'">Delete</button></td>
     </tr>
 <% } %>
 </table>

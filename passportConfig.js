@@ -5,43 +5,46 @@ const bcrypt = require("bcrypt");
 function initialize(passport) {
   console.log("Авторизация включена");
 
-  const authenticateUser = (email, password, done) => {
-    console.log("Аутентификация юзера. Data:", email, password);
-    pool.query(
-      `SELECT * FROM "Employee" WHERE "Nickname" = $1`,
-      [email],
-      (err, results) => {
-        if (err) {
-          throw err;
-        }
-        // console.log(results.rows);
-
-        if (results.rows.length > 0) {
-          const user = results.rows[0];
-          console.log("Юзер успешно найден:", user);
-
-          if (user.Password == password) {
-            // @info грубое сравнение паролей!!! Необходимо использовать bcrypt compare hashed password
-            console.log('паспорта совалпаи')
-            return done(null, user);
+  const authenticateUser = (role, name, password, done) => {
+    console.log("Аутентификация юзера. Data:", name, password);
+    if (role == "doctor") {
+      pool.query(
+        `SELECT * FROM "` + role + `" WHERE "Name" = $1`,
+        [name],
+        (err, results) => {
+          if (err) {
+            throw err;
           }
-          // bcrypt.compare(password, user.password, (err, isMatch) => {
-          //   if (err) {
-          //     console.log(err);
-          //   }
-          //   if (isMatch) {
-          //     return done(null, user);
-          //   } else {
-          //     return done(null, false, { message: "Password is incorrect" });
-          //   }
-          // });
-        } else {
-          return done(null, false, {
-            message: "No user with that email address",
-          });
+          // console.log(results.rows);
+
+          if (results.rows.length > 0) {
+            const user = results.rows[0];
+            console.log("Юзер успешно найден:", user);
+
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+              console.log();
+              if (err) {
+                console.log(err);
+              }
+              if (isMatch) {
+                return done(null, user);
+              } else {
+                return done(null, false, { message: "Password is incorrect" });
+              }
+            });
+            // if (user.Password == password) {
+            //   // @info грубое сравнение паролей!!! Необходимо использовать bcrypt compare hashed password
+            //   console.log('паспорта совалпаи')
+            //   return done(null, user);
+            // }
+          } else {
+            return done(null, false, {
+              message: "No user with that email address",
+            });
+          }
         }
-      }
-    );
+      );
+    }
   };
 
   passport.use(
