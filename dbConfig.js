@@ -32,8 +32,28 @@ const initConnection = (user, password) => {
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,
   });
+  if (user == "postgres") {
+    return pool;
+  }
+  // При неправильно выбрайнно роли мы всё равно подключимся, но запросим имя из базы с этой ролью, чтобы если его нет - кинуть ошибку
+  pool.query(
+    `SELECT id FROM "${role.tablename}" where "Name" = user;`,
+    [],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      if (results.rows.length == 0) {
+        console.log(
+          "\n===!!!ОШИБКА КОННЕКТА К БАЗЕ!!!=== ЮЗЕР НЕ НАЙДЕН В СОПУТСТВУЮЩЕЙ ТАБЛИЦЕ\n"
+        );
+      }
+      const currentUserId = results.rows.shift().id;
+      console.log(`Вход под user id (role: ${role.name})`, currentUserId);
+    }
+  );
 
   return pool;
 };
 
-module.exports = { pool, initConnection };
+module.exports = { initConnection };

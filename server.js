@@ -7,7 +7,7 @@ function getRandomInt(max) {
 
 // ======@info ======НАЧАЛО= эту хуйню не трогать, 95% шанс что-то сломать============================================================
 const express = require("express");
-const { pool, initConnection } = require("./dbConfig");
+const { initConnection } = require("./dbConfig");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("express-flash");
@@ -60,75 +60,89 @@ app.get("/users/logout", (req, res) => {
 });
 
 app.post("/users/register", async (req, res) => {
-  let { Nickname, RoleId, password, password2 } = req.body;
-
+  let { name, surname, role: rolename, password, password2 } = req.body;
   let errors = [];
+  let rolenameindb;
 
-  console.log({
-    Nickname,
-    RoleId,
-    password,
-    password2,
-  });
-
-  if (!Nickname || !RoleId || !password || !password2) {
+  if (!name || !rolename || !password || !password2) {
     errors.push({ message: "Заполните все поля" });
   }
 
   if (password !== password2) {
     errors.push({ message: "Пароли не совпадают" });
   }
+  console.log(role);
+  console.log("====");
+  switch (rolename) {
+    case "Admin":
+      role.name = rolename;
+      rolenameindb = "Admin";
+      role.tablename = "Administration";
+      break;
+    case "Staff":
+      role.name = rolename;
+      rolenameindb = "Pharmacy_Staff";
+      role.tablename = "Pharmacy_staff";
+      break;
+    case "Doctor":
+      role.name = rolename;
+      rolenameindb = "Doctors";
+      role.tablename = "Doctor";
+      break;
+  }
+  console.log(name, role, password, password2);
 
-  if (errors.length > 0) {
-    res.render("register", { errors, Nickname, RoleId, password, password2 });
-  } else {
-    const hashedPassword = await bcrypt.hash(password, 10); // @info хэширование
-    const id = getRandomInt(10000);
-    console.log(hashedPassword);
-    // Validation passed
-    pool.query(
-      `SELECT * FROM "Employee"
-        WHERE "Nickname" = $1`,
-      [Nickname],
-      (err, results) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log(results.rows);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-        if (results.rows.length > 0) {
-          errors.push({ message: "Такой пользователь уже существует" });
-          res.render("register", {
-            errors,
-            Nickname,
-            RoleId,
-            password,
-            password2,
-          });
-        } else {
-          pool.query(
-            // @info ИЗМЕНИТЬ ДЛЯ РЕГИСТРАЦИИ
-            `INSERT INTO "Employee" ("Id", "Nickname", "RoleId", "Password") 
+  const id = getRandomInt(10000000);
+  const pool = initConnection();
+  pool.query(
+    `INSERT INTO "${role.tablename}" ("id", "Name", "Surname", "Password") 
                 VALUES ($1, $2, $3, $4)`,
-            [id, Nickname, RoleId, hashedPassword],
-            (err, results) => {
-              if (err) {
-                throw err;
-              }
-              console.log(results.rows);
-              console.log("Человек зарегистрирован. Data: ", {
-                Nickname,
-                RoleId,
-                hashedPassword,
-              });
+    [id, name, surname, hashedPassword],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
 
-              res.redirect("/users/login");
+      console.log("Человек зарегистрирован. Data: ", {
+        id,
+        name,
+        surname,
+        hashedPassword,
+      });
+
+      console.log("ебаные запросы для ебаных ролей::");
+      console.log(`CREATE ROLE "${name}" WITH
+      LOGIN
+      NOSUPERUSER
+      NOCREATEDB
+      NOCREATEROLE
+      PASSWORD '${password}'`);
+      console.log(`GRANT "${rolenameindb}" TO "${name}"`);
+
+      pool.query(
+        `CREATE ROLE "${name}" WITH
+        LOGIN
+        NOSUPERUSER
+        NOCREATEDB
+        NOCREATEROLE
+        PASSWORD '${password}'`,
+        [],
+        (err, results) => {
+          if (err) console.log(1008, err);
+          pool.query(
+            `GRANT "${rolenameindb}" TO "${name}"`,
+            [],
+            (err, results) => {
+              if (err) console.log(1009, err);
             }
           );
         }
-      }
-    );
-  }
+      );
+      res.redirect("/users/login");
+    }
+  );
 });
 
 app.post(
@@ -140,10 +154,23 @@ app.post(
   })
 );
 
-app.post("/users/login1", (req, res) => {
+app.post("/users/login1", async (req, res) => {
   const { name, password, role: rolename } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log(hashedPassword);
   console.log(rolename);
   role.name = rolename;
+  switch (role.name) {
+    case "Admin":
+      role.tablename = "Administration";
+      break;
+    case "Staff":
+      role.tablename = "Pharmacy_staff";
+      break;
+    case "Doctor":
+      role.tablename = "Doctor";
+      break;
+  }
   initConnection(name, password);
   res.redirect("/users/justtable?entity=History");
 });

@@ -1,4 +1,6 @@
 const { initConnection } = require("../dbConfig");
+const role = require("./currentRole");
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
@@ -21,14 +23,14 @@ const spaInsert = (req, res) => {
   Deadline += " 00:00:00";
   const pool = initConnection();
   pool.query(
-    `SELECT id FROM "Administration" where "Name" = user;`,
+    `SELECT id FROM "${role.tablename}" where "Name" = user;`,
     [],
     (err, results) => {
       if (err) {
         throw err;
       }
-      const currentAdministratorId = results.rows.shift().id;
-      console.log("currentAdministratorId:", currentAdministratorId);
+      const currentUserId = results.rows.shift().id;
+      console.log(`current USER ID (role: ${role.name})`, currentUserId);
     }
   );
 

@@ -23,17 +23,24 @@
         <input
           type="text"
           id="name"
-          name="Nickname"
-          placeholder="Nickname"
+          name="name"
+          placeholder="name"
+          required
+        />
+        <input
+          type="text"
+          id="surname"
+          name="surname"
+          placeholder="surname"
           required
         />
       </div>
       <div>
         <label>Choose role</label>
-        <select id="role" name="RoleId">
-          <option value="1">manager</option>
-          <option value="2">worker</option>
-          <option value="3">admin</option>
+        <select id="role" name="role">
+          <option value="Admin">Admin</option>
+          <option value="Doctor">Doctor</option>
+          <option value="Staff">Staff</option>
         </select>
       </div>
       <div>
