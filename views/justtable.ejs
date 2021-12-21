@@ -75,12 +75,12 @@
     <div class="btn-group">
         <button style="float: right;" onclick="document.location='/users/logout'">Logout</button>
         <button onclick="document.location=''">Обновить</button>
-        <button onclick="NotImplemented()">Кнопка3</button>
+        <button onclick="document.location='/optimize'">Оптимизировать</button>
         <button onclick="NotImplemented()">Кнопка4</button>
     </div>
 </div>
 <br><br><br>
-
+    
 <span style="float:right;">
     <h4>Новая задача: </h4>
 <form name="createform" action="/users/justtable/add" method="POST">
@@ -143,42 +143,25 @@
 </form>
 </span>
 
+<% if(rolename=="Doctor") { %>
 <span style="float:left;">
-    <h4>Получить отчет: </h4>
-<form name="createform" action="/report" method="POST">
+    <h4>Найти информацию о животном: </h4>
+<form name="createform" action="/searh" method="POST">
     <div>
         <input
-                type="number"
-                id="id"
-                name="Id"
-                placeholder="id сотрудника"
+                type="text"
+                id="search"
+                name="Name"
+                placeholder="Имя питомца"
                 required
         />
     </div>
     <div>
-        <input
-            type="date"
-            id="date"
-            name="start_date"
-            placeholder="Дата начала"
-            required
-        />
-
-        <input
-            type="date"
-            id="date"
-            name="end_date"
-            placeholder="Дата конца"
-            required
-        />
-    </div>
-    <div>
-        <input type="submit" value="Сформировать" />
+        <input type="submit" value="Найти" />
     </div>
 </form>
 </span>
-
-
+<%}%>
 <span style="float:left;">
     <h4>Фильтрация:</h4>
 <form name="filterform" action="?" method="GET">
@@ -195,6 +178,7 @@
                 name="value"
                 placeholder="Значение"
         />
+        <% if(rolename=="Admin") { %>
         <select id="entity" name="entity">
             <option value="Administration">Administration</option>
             <option value="Animal">Animal</option>
@@ -215,6 +199,27 @@
             <option value="Veterinary_Pharmacy_Food">Veterinary_Pharmacy_Food</option>
             <option value="Veterinary_Pharmacy_Medications">Veterinary_Pharmacy_Medications</option>
         </select>
+        <%} else if(rolename=="Doctor") { %>
+        <select id="entity" name="entity">
+            <option value="History">History</option>
+            <option value="Animal">Animal</option>
+            <option value="Appointment">Appointment</option>
+            <option value="Client">Client</option>
+        </select>
+        <%} else if(rolename=="Staff") { %>
+        <select>
+            <option value="Veterinary_Pharmacy">Veterinary_Pharmacy</option>
+            <option value="Food">Food</option>
+            <option value="Medications">Medications</option>
+            <option value="Order">Order</option>
+            <option value="Order_Food">Order_Food</option>
+            <option value="Order_Medications">Order_Medications</option>
+            <option value="Pharmacy_staff">Pharmacy_staff</option>
+            <option value="Services">Services</option>
+            <option value="Services_Clinic">Services_Clinic</option>
+            <option value="Veterinary_Pharmacy_Food">Veterinary_Pharmacy_Food</option>
+            <option value="Veterinary_Pharmacy_Medications">Veterinary_Pharmacy_Medications</option>
+        </select><%}%>
     </div>
     <div>
         <input type="submit" value="Select" />

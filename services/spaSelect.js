@@ -31,7 +31,7 @@ const spaSelect = (req, res, entity, filterParams) => {
         const rows = results.rows;
 
         res.render("justtable.ejs", {
-          role: role.name,
+          rolename: role.name,
           rows: rows,
           entity: entity,
         });

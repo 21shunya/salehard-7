@@ -18,6 +18,9 @@ const PORT = 3000;
 const initializePassport = require("./passportConfig");
 const { spaDelete } = require("./services/spaDelete");
 const { spaReport } = require("./services/spaReport");
+const { spaSearch } = require("./services/spaSearh");
+const { spaOptimize } = require("./services/spaOptimize");
+const { sqlInjectionFilter } = require("./services/sqlInjectionFilter");
 initializePassport(passport);
 
 // Middleware
@@ -81,7 +84,7 @@ app.post("/users/register", async (req, res) => {
       break;
     case "Staff":
       role.name = rolename;
-      rolenameindb = "Pharmacy_Staff";
+      rolenameindb = "Pharmacy_staff";
       role.tablename = "Pharmacy_staff";
       break;
     case "Doctor":
@@ -96,10 +99,12 @@ app.post("/users/register", async (req, res) => {
 
   const id = getRandomInt(10000000);
   const pool = initConnection();
+  console.log(`INSERT INTO "${role.tablename}" ("id", "Name", "Surname", "Password") 
+  VALUES (${id}, ${name}, ${surname}, ${hashedPassword})`);
   pool.query(
     `INSERT INTO "${role.tablename}" ("id", "Name", "Surname", "Password") 
-                VALUES ($1, $2, $3, $4)`,
-    [id, name, surname, hashedPassword],
+                VALUES (${id}, '${name}', '${surname}', '${hashedPassword}')`,
+    [],
     (err, results) => {
       if (err) {
         throw err;
@@ -172,6 +177,8 @@ app.post("/users/login1", async (req, res) => {
       break;
   }
   initConnection(name, password);
+  if (rolename == "Staff")
+    res.redirect("/users/justtable?entity=Veterinary_Pharmacy");
   res.redirect("/users/justtable?entity=History");
 });
 // =====@info =======КОНЕЦ= хуйни которую нельзя трогать===============================================================
@@ -179,8 +186,15 @@ app.post("/users/login1", async (req, res) => {
 // ====НАЧАЛО БЛОКА @info здесь можно писать свои эндпоинты, и по-хорошему логику выносить в файлы отдельные в папке services
 // пример импорта есть в самом начале документа
 app.get("/users/justtable", (req, res) => {
-  const { key, value, entity } = req.query;
-
+  let { key, value, entity } = req.query;
+  if (
+    sqlInjectionFilter(key) ||
+    sqlInjectionFilter(value) ||
+    sqlInjectionFilter(entity)
+  ) {
+    key = undefined;
+    value = undefined;
+  }
   if (key != undefined && value != undefined && key != "" && value != "") {
     console.log("Запрос должен фильтроваться", { key, value });
     return spaSelect(req, res, entity, { key, value });
@@ -200,6 +214,14 @@ app.get("/delete/:entity/:id", (req, res) => {
 
 app.post("/report/", (req, res) => {
   return spaReport(req, res);
+});
+
+app.post("/searh", (req, res) => {
+  return spaSearch(req, res);
+});
+
+app.get("/optimize", (req, res) => {
+  return spaOptimize(res);
 });
 // ====КОНЕЦ БЛОКА @info ==============================================================================================
 
