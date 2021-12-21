@@ -21,6 +21,7 @@ const { spaReport } = require("./services/spaReport");
 const { spaSearch } = require("./services/spaSearh");
 const { spaOptimize } = require("./services/spaOptimize");
 const { sqlInjectionFilter } = require("./services/sqlInjectionFilter");
+const { spaViewOrders } = require("./services/spaViewOrders");
 initializePassport(passport);
 
 // Middleware
@@ -222,6 +223,10 @@ app.post("/searh", (req, res) => {
 
 app.get("/optimize", (req, res) => {
   return spaOptimize(res);
+});
+
+app.get("/view-orders", (req, res) => {
+  return spaViewOrders(res);
 });
 // ====КОНЕЦ БЛОКА @info ==============================================================================================
 
