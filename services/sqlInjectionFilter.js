@@ -26,6 +26,21 @@ const sqlInjectionFilter = (word) => {
   if (word.indexOf("#") != -1) {
     return true;
   }
+  if (word.indexOf("UNION") != -1) {
+    return true;
+  }
+  if (word.indexOf("/*") != -1) {
+    return true;
+  }
+  if (word.indexOf("/*") != -1) {
+    return true;
+  }
+  if (word.indexOf("*/") != -1) {
+    return true;
+  }
+  if (word.indexOf("/*") != -1) {
+    return true;
+  }
   return false;
 };
 
