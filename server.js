@@ -1,9 +1,6 @@
 const { spaSelect } = require("./services/spaSelect");
 const { spaInsert } = require("./services/spaInsert");
 const role = require("./services/currentRole");
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
 
 // ======@info ======НАЧАЛО= эту хуйню не трогать, 95% шанс что-то сломать============================================================
 const express = require("express");
@@ -98,13 +95,12 @@ app.post("/users/register", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const id = getRandomInt(10000000);
   const pool = initConnection();
-  console.log(`INSERT INTO "${role.tablename}" ("id", "Name", "Surname", "Password") 
-  VALUES (${id}, ${name}, ${surname}, ${hashedPassword})`);
+  console.log(`INSERT INTO "${role.tablename}" ("Name", "Surname", "Password") 
+  VALUES (${name}, ${surname}, ${hashedPassword})`);
   pool.query(
-    `INSERT INTO "${role.tablename}" ("id", "Name", "Surname", "Password") 
-                VALUES (${id}, '${name}', '${surname}', '${hashedPassword}')`,
+    `INSERT INTO "${role.tablename}" ("Name", "Surname", "Password") 
+                VALUES ('${name}', '${surname}', '${hashedPassword}')`,
     [],
     (err, results) => {
       if (err) {
@@ -112,7 +108,6 @@ app.post("/users/register", async (req, res) => {
       }
 
       console.log("Человек зарегистрирован. Data: ", {
-        id,
         name,
         surname,
         hashedPassword,
@@ -203,9 +198,12 @@ app.get("/users/justtable", (req, res) => {
   return spaSelect(req, res, entity);
 });
 // @info браузер жалуется на то что в форме для фильтрации и в форме для создания новой записи имеются дивы с одинаковыми именами
-app.post("/users/justtable/add", (req, res) => {
-  //console.log(req.body)
-  return spaInsert(req, res);
+app.post("/users/justtable/:entity/add", (req, res) => {
+  const { entity } = req.params;
+  const args_ = req.body;
+  const args = Object.values(args_);
+  console.log(args, entity);
+  return spaInsert(entity, args, res);
 });
 
 app.get("/delete/:entity/:id", (req, res) => {
@@ -218,7 +216,20 @@ app.post("/report/", (req, res) => {
 });
 
 app.post("/searh", (req, res) => {
+  let { key, value, entity } = req.query;
+  if (entity) {
+    res.redirect("/users/justtable?entity=" + entity);
+  }
   return spaSearch(req, res);
+});
+
+app.get("/searh", (req, res) => {
+  console.log("get /search", req.query);
+  let { key, value, entity } = req.query;
+  if (entity) {
+    return spaSelect(req, res, entity);
+  }
+  return spaSelect(req, res, "History");
 });
 
 app.get("/optimize", (req, res) => {
@@ -226,6 +237,10 @@ app.get("/optimize", (req, res) => {
 });
 
 app.get("/view-orders", (req, res) => {
+  let { key, value, entity } = req.query;
+  if (entity) {
+    res.redirect("/users/justtable?entity=" + entity);
+  }
   return spaViewOrders(res);
 });
 // ====КОНЕЦ БЛОКА @info ==============================================================================================

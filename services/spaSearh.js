@@ -36,7 +36,7 @@ const spaSearch = (req, res) => {
       res.render("justtable.ejs", {
         rolename: role.name,
         rows: arr,
-        entity: "alallala",
+        entity: "Данные по питомцу",
       });
     }
   );

@@ -27,7 +27,7 @@ const initConnection = (user, password) => {
     host: "localhost",
     user: user,
     password: password,
-    database: "vet2",
+    database: "VET",
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000,

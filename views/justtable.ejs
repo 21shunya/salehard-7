@@ -1,52 +1,7 @@
 <!DOCTYPE html>
 <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"/>
 <style>
-    sortable {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 100%;
-        border: 1px solid #ddd;
-    }
-    .sortable {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 100%;
-        border: 1px solid #ddd;
-    }
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 100%;
-        border: 1px solid #ddd;
-    }
-    th, td {
-        border: solid 1px #000;
-        text-align: left;
-    }
-    tr:hover td{
-        background: #F08080;
-    }
-    .btn-group button {
-        background-color: #696969;
-        border: 1px solid whitesmoke;
-        color: white;
-        padding: 10px 24px;
-        cursor: pointer;
-        float: left;
-    }
-
-    .btn-group button:not(:last-child) {
-        border-right: none;
-    }
-
-    .btn-group:after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-    .btn-group button:hover {
-        background-color: #3e8e41;
-    }
+    
 
 </style>
 <script>
@@ -55,6 +10,54 @@
     }
 </script>
 <html lang="en">
+<style>
+    body{
+        background: url('https://catherineasquithgallery.com/uploads/posts/2021-02/1612630770_84-p-fon-zelenii-mramor-100.jpg');
+        background-size: cover;
+        display: flex;
+        flex-direction: column;
+    }
+    h2, h3, h4{
+        background: rgba(255, 255, 255, 0.705);
+        color: rgb(36, 43, 39);
+        text-align: center;
+        border-radius: 10px;
+        padding: 0 6px;
+    }
+    .header{
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
+    }
+    .item{
+        background: rgba(255, 255, 255, 0.712);
+        border-radius: 10px;
+        padding: 3px 0px;
+        margin: 0 20px;
+    }
+    .center{
+        display: flex;
+        justify-content: flex-start;
+        margin: 20px;
+    }
+    .bottom{
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        margin: 20px;
+    }
+    .insert{
+       padding: 10px;
+    }
+    input{
+        border-radius: 5px;
+        margin: 0 10px;
+    }
+    .btn{
+        background-color: rgb(255, 255, 255);
+        margin: 0 10px;
+    }
+</style>
 <head>
     <meta charset="UTF-8" />
     <link
@@ -65,188 +68,131 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>жопный обосранный жууук</title>
 </head>
-<body>
-<span style="float:left;">
-<h2>SPA Ветклиники</h2>
-</span>
 
-<div>
-    <h2 style="text-align:right">Вход под ролью <%= rolename %></h2>
-    <div class="btn-group">
-        <button style="float: right;" onclick="document.location='/users/logout'">Logout</button>
+<body>
+
+
+<div class="header btn-group">
+    <div class="item">
+        <h2>SPA Ветклиники</h2>
         <button onclick="document.location=''">Обновить</button>
+        <% if(rolename=="Doctor" || rolename=="Admin") { %>
         <button onclick="document.location='/optimize'">Оптимизировать</button>
+        <%} else if(rolename=="Staff" || rolename=="Admin") { %>
         <button onclick="document.location='/view-orders'">view orders</button>
+        <%}%>
+    </div>
+    <div class="item">
+        <h2 >Вход под ролью <%= rolename %></h2>
+        <button class="btn"  onclick="document.location='/users/logout'">Logout</button>
     </div>
 </div>
-<br><br><br>
-    
-<span style="float:right;">
-    <h4>Новая задача: </h4>
-<form name="createform" action="/users/justtable/add" method="POST">
-    <div>
-        <div>
-            <label>Дедлайн</label>
-        <input
-            type="date"
-            id="date"
-            name="Deadline"
-            required
-        />
-        </div>
-        <div>
-        <input
-                type="number"
-                id="name"
-                name="AssigneeId"
-                placeholder="Кому назначить"
-                required
-        />
-        </div>
-        <div>
-        <input
-                type="number"
-                name="OrganizationId"
-                placeholder="Номер организации"
-                required
-        />
-        </div>
-        <div>
-        <input
-                type="number"
-                name="ContactPersonId"
-                placeholder="Номер контактного лица"
-                required
-        />
-        </div>
-        <div>
-        <input
-                type="number"
-                name="TypeId"
-                placeholder="Тип задачи"
-                required
-        />
-        </div>
-        <div>
-        <input
-                type="number"
-                name="PriorityId"
-                placeholder="Приоритет"
-                required
-        />
-        </div>
 
+<div class="center">
+    <% if(rolename=="Doctor" || rolename=="Admin") { %>
+    <div class="item" style="float:left;">
+        <h4>Найти информацию о животном: </h4>
+    <form name="createform" action="/searh" method="POST">
+        <div>
+            <input
+                    type="text"
+                    id="search"
+                    name="Name"
+                    placeholder="Имя питомца"
+                    required
+            />
+        </div>
+        <div>
+            <input class="btn" type="submit" value="Найти" />
+        </div>
+    </form>
     </div>
-    <div>
-        <input type="submit" value="Create" />
+    <%}%>
+    <div class="item" style="float:left;">
+        <h4>Фильтрация:</h4>
+    <form name="filterform" action="?" method="GET">
+        <div>
+            <input
+                    type="key"
+                    id="key"
+                    name="key"
+                    placeholder="Ключ"
+            />
+            <input
+                    type="value"
+                    id="value"
+                    name="value"
+                    placeholder="Значение"
+            />
+            <% if(rolename=="Admin") { %>
+            <select id="entity" name="entity">
+                <option value="Administration">Administration</option>
+                <option value="Animal">Animal</option>
+                <option value="Appointment">Appointment</option>
+                <option value="Client">Client</option>
+                <option value="Clinic">Clinic</option>
+                <option value="Doctor">Doctor</option>
+                <option value="Food">Food</option>
+                <option value="History">History</option>
+                <option value="Medications">Medications</option>
+                <option value="Order">Order</option>
+                <option value="Order_Food">Order_Food</option>
+                <option value="Order_Medications">Order_Medications</option>
+                <option value="Pharmacy_staff">Pharmacy_staff</option>
+                <option value="Services">Services</option>
+                <option value="Services_Clinic">Services_Clinic</option>
+                <option value="Veterinary_Pharmacy">Veterinary_Pharmacy</option>
+                <option value="Veterinary_Pharmacy_Food">Veterinary_Pharmacy_Food</option>
+                <option value="Veterinary_Pharmacy_Medications">Veterinary_Pharmacy_Medications</option>
+            </select>
+            <%} else if(rolename=="Doctor") { %>
+            <select id="entity" name="entity">
+                <option value="History">History</option>
+                <option value="Animal">Animal</option>
+                <option value="Appointment">Appointment</option>
+                <option value="Client">Client</option>
+                <option value="Services">Services</option>
+                <option value="Services_Clinic">Services_Clinic</option>
+            </select>
+            <%} else if(rolename=="Staff") { %>
+            <select  id="entity" name="entity">
+                <option value="Veterinary_Pharmacy">Veterinary_Pharmacy</option>
+                <option value="Food">Food</option>
+                <option value="Medications">Medications</option>
+                <option value="Order">Order</option>
+                <option value="Order_Food">Order_Food</option>
+                <option value="Order_Medications">Order_Medications</option>
+                <option value="Pharmacy_staff">Pharmacy_staff</option>
+                <option value="Veterinary_Pharmacy_Food">Veterinary_Pharmacy_Food</option>
+                <option value="Veterinary_Pharmacy_Medications">Veterinary_Pharmacy_Medications</option>
+            </select><%}%>
+        </div>
+        <div>
+            <input class="btn" type="submit" value="Select" />
+        </div>
+    </form>
     </div>
-</form>
-</span>
+</div>
 
-<% if(rolename=="Doctor") { %>
-<span style="float:left;">
-    <h4>Найти информацию о животном: </h4>
-<form name="createform" action="/searh" method="POST">
-    <div>
-        <input
-                type="text"
-                id="search"
-                name="Name"
-                placeholder="Имя питомца"
-                required
-        />
-    </div>
-    <div>
-        <input type="submit" value="Найти" />
-    </div>
-</form>
-</span>
-<%}%>
-<span style="float:left;">
-    <h4>Фильтрация:</h4>
-<form name="filterform" action="?" method="GET">
-    <div>
-        <input
-                type="key"
-                id="key"
-                name="key"
-                placeholder="Ключ"
-        />
-        <input
-                type="value"
-                id="value"
-                name="value"
-                placeholder="Значение"
-        />
-        <% if(rolename=="Admin") { %>
-        <select id="entity" name="entity">
-            <option value="Administration">Administration</option>
-            <option value="Animal">Animal</option>
-            <option value="Appointment">Appointment</option>
-            <option value="Client">Client</option>
-            <option value="Clinic">Clinic</option>
-            <option value="Doctor">Doctor</option>
-            <option value="Food">Food</option>
-            <option value="History">History</option>
-            <option value="Medications">Medications</option>
-            <option value="Order">Order</option>
-            <option value="Order_Food">Order_Food</option>
-            <option value="Order_Medications">Order_Medications</option>
-            <option value="Pharmacy_staff">Pharmacy_staff</option>
-            <option value="Services">Services</option>
-            <option value="Services_Clinic">Services_Clinic</option>
-            <option value="Veterinary_Pharmacy">Veterinary_Pharmacy</option>
-            <option value="Veterinary_Pharmacy_Food">Veterinary_Pharmacy_Food</option>
-            <option value="Veterinary_Pharmacy_Medications">Veterinary_Pharmacy_Medications</option>
-        </select>
-        <%} else if(rolename=="Doctor") { %>
-        <select id="entity" name="entity">
-            <option value="History">History</option>
-            <option value="Animal">Animal</option>
-            <option value="Appointment">Appointment</option>
-            <option value="Client">Client</option>
-        </select>
-        <%} else if(rolename=="Staff") { %>
-        <select>
-            <option value="Veterinary_Pharmacy">Veterinary_Pharmacy</option>
-            <option value="Food">Food</option>
-            <option value="Medications">Medications</option>
-            <option value="Order">Order</option>
-            <option value="Order_Food">Order_Food</option>
-            <option value="Order_Medications">Order_Medications</option>
-            <option value="Pharmacy_staff">Pharmacy_staff</option>
-            <option value="Services">Services</option>
-            <option value="Services_Clinic">Services_Clinic</option>
-            <option value="Veterinary_Pharmacy_Food">Veterinary_Pharmacy_Food</option>
-            <option value="Veterinary_Pharmacy_Medications">Veterinary_Pharmacy_Medications</option>
-        </select><%}%>
-    </div>
-    <div>
-        <input type="submit" value="Select" />
-    </div>
-</form>
-</span>
-
-<h1 style="padding: 100px"></h1>
-
+<div class="bottom">
 <% if (rows.length > 0) { %>
+    <div class="item">
+<h3><%= entity%></h3>
 <table class="sortable">
-    <tr style="border: solid 1px #000; text-align: left;">
+    <tr style="border: solid 1px rgb(0, 0, 0); background-color: rgb(255, 255, 255); text-align: left;">
         <% for (propertyname of Object.getOwnPropertyNames(rows[0])) { %>
-            <th style="border: solid 1px #000; text-align: left;"><%= propertyname %></th>
+            <th style="border: solid 1px rgb(17, 17, 17); text-align: left;"><%= propertyname %></th>
             <% } %>
-        <th style="border: solid 1px #000; text-align: left;">Изменить</th>
-        <th style="border: solid 1px #000; text-align: left;">Удалить (на себе не вызывать!!)</th>
+        <th style="border: solid 1px rgb(12, 12, 12); text-align: left;">Удалить (на себе не вызывать!!)</th>
     </tr>
 <% var i = 1; %>
 <% for (var row of rows ) { %>
-    <% var swapcolor = ['#f2f2f2', '#A9A9A9'] %>
+    <% var swapcolor = ['rgb(255, 255, 255, 0.5)', 'rgba(255, 254, 189, 0.6)'] %>
     <tr style='background-color: <%= swapcolor[i++%2] %>; border: solid 1px #000; text-align: left;'>
         <% for (propertyname of Object.getOwnPropertyNames(row)) { %>
-            <td style="border: solid 1px #000; text-align: left;"><%= row[propertyname] %></td>
+            <td style="border: solid 1px rgb(32, 32, 32); text-align: left;"><%= row[propertyname] %></td>
         <% } %>
-        <td style="border: solid 1px #000; text-align: left;"><button type="submit" data-target="#modal-edit-user-<%= row.Id %>">Кнопка1</button></td>
-        <td style="border: solid 1px #000; text-align: left;"><button onclick="document.location='/delete/<%= entity %>/<%= row.id %>'">Delete</button></td>
+        <td style="border: solid 1px rgb(39, 39, 39); text-align: left;"><button onclick="document.location='/delete/<%= entity %>/<%= row.id %>'">Delete</button></td>
     </tr>
 <% } %>
 </table>
@@ -254,5 +200,189 @@
     <table></table>
     <h1>No data for this entity</h1>
 <% } %>
+</div>
+
+<% if(rolename=="Doctor" || rolename=="Admin") { %>
+<div class="item insert">
+    <% if(entity=="Animal") { %>
+    <h4 >Новый питомец: </h4>
+<form  name="createform" action="/users/justtable/<%= entity %>/add" method="POST">
+    <div>
+        <div>
+        <input
+            type="text"
+            name="Name"
+            placeholder="Кличка"
+            required
+        />
+        </div>
+        <div>
+        <input
+            type="text"
+            name="Kind"
+            placeholder="Вид животного"
+            required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                id="age"
+                name="Age"
+                placeholder="Возраст"
+                required
+        />
+        </div>
+        <input
+            type="text"
+            name="Species"
+            placeholder="Порода"
+            required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                name="id_client"
+                placeholder="id клиента"
+                required
+        />
+        </div>
+    <div>
+        <input class="btn" type="submit" value="Create" />
+    </div>
+    </div>
+</form>
+    <%} else if(entity=="Client") { %>
+    <h4>Новый клиент: </h4>
+    <form name="createform" action="/users/justtable/<%= entity %>/add" method="POST">
+    <div>
+        <div>
+        <input
+            type="text"
+            name="Name"
+            placeholder="Имя"
+            required
+        />
+        </div>
+        <div>
+        <input
+            type="text"
+            name="Surname"
+            placeholder="Фамилия"
+            required
+        />
+        </div>
+        <div>
+        <input
+            type="text"
+            name="Patronymic"
+            placeholder="Отчестово"
+            required
+        />
+        </div>
+        <div>
+        <input
+                type="text"
+                name="Phone"
+                placeholder="Номер телефона"
+                required
+        />
+        </div>
+    <div>
+        <input class="btn" type="submit" value="Create" />
+    </div>
+    </div>
+</form>
+    <%} else if(entity=="Appointment") { %>
+    <h4>Новая запись на приём: </h4>
+    <form name="createform" action="/users/justtable/<%= entity %>/add" method="POST">
+    <div>
+        <div>
+        <input
+                type="number"
+                id="id"
+                name="id_animal"
+                placeholder="id животного"
+                required
+        />
+        </div>
+        <div>
+            <label>Дата</label>
+        <input
+            type="date"
+            id="date"
+            name="Date"
+            required
+        />
+        </div>
+        
+        <div>
+        <input
+                type="number"
+                name="id_services"
+                placeholder="id услуги"
+                required
+        />
+        </div>
+        <div>
+        <input
+                type="number"
+                name="id_doctor"
+                placeholder="id доктора"
+                required
+        />
+        </div>
+        <div>
+        <input class="btn" type="submit" value="Create" />
+    </div>
+    </div>
+</form>
+<%}} else if(rolename=="Staff" || rolename=="Admin") {%>
+    <div class="item insert">
+    <%if(entity=="Order") {%>
+    <h4>Новый заказ: </h4>
+    <form name="createform" action="/users/justtable/<%= entity %>/add" method="POST">
+    <div>
+        <div>
+        <input
+            type="text"
+            name="Name"
+            placeholder="Имя"
+            required
+        />
+        </div>
+        <div>
+        <input
+            type="text"
+            name="Surname"
+            placeholder="Фамилия"
+            required
+        />
+        </div>
+        <div>
+        <input
+                type="text"
+                name="Phone"
+                placeholder="Номер телефона"
+                required
+        />
+        </div>
+        <div>
+            <input
+            type="number"
+            name="id_pharmacy"
+            placeholder="id аптеки"
+            required
+            />
+        </div>
+    <div>
+        <input class="btn" type="submit" value="Create" />
+    </div>
+    </div>
+    </div>
+</form>
+<%}}%>
+</div>
 </body>
 </html>
